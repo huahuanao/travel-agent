@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>昆明7天6晚行程规划（不去石林版）8月25日-31日</title>
+<style>
+  :root {
+    --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    --color-background-primary: #ffffff;
+    --color-background-secondary: #f5f5f7;
+    --color-border-tertiary: #e5e5ea;
+    --color-text-primary: #1d1d1f;
+    --color-text-secondary: #6e6e73;
+    --color-text-tertiary: #8e8e93;
+    --border-radius-lg: 14px;
+    --border-radius-md: 10px;
+  }
+  body { font-family: var(--font-sans); background: #f2f2f7; max-width: 760px; margin: 0 auto; padding: 24px 16px 48px; color: var(--color-text-primary); }
+  h2.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .trip-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 20px 24px; margin-bottom: 16px; }
+  .trip-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .day-badge { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 14px; flex-shrink: 0; }
+  .badge-blue { background: #E6F1FB; color: #0C447C; }
+  .badge-teal { background: #E1F5EE; color: #085041; }
+  .badge-coral { background: #FAECE7; color: #712B13; }
+  .badge-purple { background: #EEEDFE; color: #3C3489; }
+  .badge-amber { background: #FAEEDA; color: #633806; }
+  .badge-pink { background: #FBEAF0; color: #72243E; }
+  .badge-green { background: #E8F5E9; color: #1B5E20; }
+  .trip-title { font-size: 15px; font-weight: 500; margin: 0; }
+  .trip-subtitle { font-size: 12px; color: var(--color-text-secondary); margin: 0; }
+  .time-row { display: flex; gap: 0; margin-bottom: 10px; }
+  .time-col { width: 60px; flex-shrink: 0; font-size: 12px; font-weight: 500; color: var(--color-text-tertiary); padding-top: 2px; }
+  .content-col { flex: 1; font-size: 13px; line-height: 1.6; color: var(--color-text-primary); }
+  .content-col strong { font-weight: 500; }
+  .content-col .tip { display: inline-block; font-size: 11px; color: var(--color-text-tertiary); margin-top: 4px; }
+  .content-col .tag { display: inline-block; font-size: 11px; padding: 1px 6px; border-radius: 4px; margin-right: 4px; }
+  .tag-food { background: #FAEEDA; color: #633806; }
+  .tag-transit { background: #E6F1FB; color: #0C447C; }
+  .tag-free { background: #E1F5EE; color: #085041; }
+  .tag-must { background: #FAECE7; color: #712B13; }
+  .tag-new { background: #E8F5E9; color: #1B5E20; }
+  .tag-rain { background: #E6F1FB; color: #0C447C; }
+  .tag-check { background: #FBEAF0; color: #72243E; }
+  .section-title { font-size: 14px; font-weight: 500; margin: 0 0 12px 0; }
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 16px; }
+  .info-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; }
+  .info-card .label { font-size: 11px; color: var(--color-text-tertiary); margin-bottom: 4px; }
+  .info-card .value { font-size: 13px; font-weight: 500; }
+  .flight-info { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 12px 16px; margin-bottom: 12px; }
+  .flight-row { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 4px; }
+  .flight-row:last-child { margin-bottom: 0; }
+  .flight-arrow { color: var(--color-text-tertiary); }
+  .hotel-note { background: #EEEDFE; border-radius: var(--border-radius-md); padding: 10px 14px; font-size: 12px; color: #3C3489; margin-bottom: 12px; line-height: 1.7; }
+  .hotel-alert { background: #FAECE7; border-radius: var(--border-radius-md); padding: 10px 14px; font-size: 12px; color: #712B13; margin-bottom: 12px; line-height: 1.7; }
+  .alt-note { background: #E8F5E9; border-radius: var(--border-radius-md); padding: 12px 16px; font-size: 12px; color: #1B5E20; margin-bottom: 12px; line-height: 1.6; }
+  .day-footer { margin-top: 14px; padding-top: 10px; border-top: 0.5px dashed var(--color-border-tertiary); font-size: 12px; line-height: 1.7; }
+  .day-footer .rain-plan { display: block; color: #0C447C; background: #F0F7FD; border-radius: 8px; padding: 8px 12px; margin-bottom: 6px; }
+  .day-footer .amap-check { display: block; color: #6e6e73; background: #f5f5f7; border-radius: 8px; padding: 8px 12px; }
+  .todo-card { background: #FFF8E6; border-radius: var(--border-radius-md); padding: 12px 16px; font-size: 12.5px; line-height: 1.8; color: #5a4300; margin-bottom: 12px; }
+  .packing-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .packing-item { font-size: 12px; padding: 3px 10px; border-radius: 12px; background: var(--color-background-secondary); color: var(--color-text-secondary); }
+  .weather-strip { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
+  .weather-day { background: var(--color-background-secondary); border-radius: 8px; padding: 8px 12px; font-size: 12px; text-align: center; min-width: 100px; }
+  .weather-day .d { font-weight: 500; }
+  .weather-day .t { color: var(--color-text-tertiary); font-size: 11px; margin-top: 2px; }
+  .src-list { font-size: 11px; color: var(--color-text-tertiary); line-height: 1.8; margin-top: 16px; padding-top: 12px; border-top: 0.5px solid var(--color-border-tertiary); }
+</style>
+</head>
+<body>
+<h2 class="sr-only">昆明7天6晚旅行行程规划（不去石林替代版）：2026年8月25日（周二）至8月31日（周一），郑州出发</h2>
+
+<div class="trip-card">
+  <h3 class="section-title">📋 本次修订说明（2026-08-23 更新，含小红书实时情报）</h3>
+  <div class="alt-note" style="margin-bottom: 0;">
+    <strong>第一轮修正：</strong>① 天数 8/25-8/31 为 <strong>7天6晚</strong>（两段酒店各 3 晚 ✅）；② 星期按 2026 年修正（8/25=周二 … 8/31=周一，<strong>8/29=周六</strong>）；③ 高德实测修正 8 处交通耗时与换乘。
+    <br><strong>第二轮（同行人 两代三人（含长辈），小红书 8/19-8/22 实时情报）：</strong>
+    ④ <strong>⚠️ 龙门上山索道停运升级改造</strong>（8/6 帖实锤），D3 改为「大巴上山+滇池索道下山」懒人版，全程约 3000 步，父母友好；
+    ⑤ 新增三人家庭出行原则卡（打车/点餐/节奏）；
+    ⑥ 新增雨季内涝预警（昆明 8/17-19 刚有暴雨内涝，易涝路段与行程关联已标注）；
+    ⑦ 海洪湿地透明船（90元/h，17:30停售）列入备选。
+    <br><strong>第三轮（大众点评+高德餐饮数据，8/23）：</strong>⑧ 新增逐日美食清单（评分/人均/地址电话均经点评搜索+高德POI 双重验证）；⑨ 每日餐位更新为具体门店与分店选择理由。
+  </div>
+</div>
+
+<div class="trip-card">
+  <h3 class="section-title">👨‍👩‍👧 三人家庭出行原则（50+ 夫妻 + 20+ 女儿）</h3>
+  <div class="todo-card">
+    <strong>交通（来自 1684 赞「带父母云南 8 天」实战经验）：</strong><br>
+    1. <strong>步行超过 1.5km 一律打车</strong>——3 人打车一车刚好（比地铁 3 人票贵不了多少，省腿信价比极高）；古城/景区内散步除外<br>
+    2. <strong>景区有观光车/大巴就坐</strong>（西山北门大巴、龙门景区内环保车），用钱换体力<br>
+    3. 教爸妈用打车 app + 导航，后期他们可以自己行动（成就感拉满）<br>
+    <strong>餐饮：</strong><br>
+    4. 选大众点评必吃榜/老字号，<strong>三人总价控制在 200 元内</strong>（昆明物价友好，米线/小锅菜很容易做到），偶尔一顿菌火锅升级<br>
+    5. 点三人套餐最划算；父母舍不得吃时"我先吃完说饱了"策略实测有效（原帖经验）<br>
+    <strong>节奏与心态：</strong><br>
+    6. 每天只排一个"必去"重头戏，午后安排轻量活动（咖啡馆/公园/博物馆），中午给父母午休余地<br>
+    7. 若父母说"你们去吧我不去了"：就说票已买不可退，或"累了我们先坐会儿"，大部分情况会去<br>
+    8. 昆明海拔 1900 米，多数人无高反，但第一天（D1/D2）不安排剧烈/长程活动 ✅ 本行程已按此设计
+  </div>
+</div>
+
+<div class="trip-card">
+  <h3 class="section-title">🍚 逐日美食清单（三人版，评分/人均经点评+高德双重验证）</h3>
+  <div class="time-row">
+    <div class="time-col">D1晚</div>
+    <div class="content-col"><strong>南强街夜市逛吃</strong>：小锅米线/烧饵块/木瓜水 人均30-50元 | 酒店楼下步行即达，雨小照逛（骑楼避雨）</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">D2午</div>
+    <div class="content-col"><strong>端仕小锅(文林街店)</strong> 4.6★·¥19/人 | 文林街74号，小锅米线老字号，正好在 D2 动线上（翠湖→云大→文林街）| 想吃正餐升级：<strong>熙楼(翠湖店)</strong> 4.7★·¥125/人，翠湖北路100号（讲武堂/云大对面），过桥米线仪式感拉满，适合带父母</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">D2晚</div>
+    <div class="content-col"><strong>旮旯食堂·现炒云南菜(南屏街店)</strong> 4.7★·¥55/人 | 护国街道耳巷19号，距酒店①步行约5分钟 | 必点：小炒肉、汽锅鸡、老奶洋芋 | 三人约170元</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">D3晚</div>
+    <div class="content-col"><strong>8种野菌·云南野生菌火锅(滇池后海店)</strong> 4.3★·¥101/人 | 碧鸡路2999-2号，民族村返程顺路（实测：民族村→店22分钟→酒店①仅15分钟，比直达仅多5分钟）| 备选：<strong>爱尚菌(昆明老街店)</strong> 4.7★·¥105/人，文庙直街33号（回市区吃，离酒店①近）</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">D4早</div>
+    <div class="content-col"><strong>辣辣小吃豆花米线(篆新农贸市场店)</strong> 4.5★·¥15/人 | 市场内10栋2层，市场遛吃起点，另尝卤饵丝/破酥包（人均20-30元管饱）</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">D4午</div>
+    <div class="content-col">植物园/黑龙潭一带农家菜或园内简餐 人均30-50元（龙泉路沿线）</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">D4晚</div>
+    <div class="content-col"><strong>四方街·云南家常菜(吴井路店)</strong> 4.6★·¥34/人 | 吴井路266号，距酒店②约1km（步行/起步价）| 到店晚可备选吴井路火塘烧烤（塘屋烧烤 吴井店）</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">D5</div>
+    <div class="content-col">民大食堂/大学城商业街（周六热闹）人均15-30元 | 必尝：包浆豆腐、烤猪蹄、炸洋芋</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">D6午</div>
+    <div class="content-col"><strong>官渡古镇内逛吃</strong>：<strong>眼镜粑粑</strong> 4.6★·¥6/个 | 古镇仿古南大街（好人家药房旁）+ 官渡小锅米线/甜白酒 | 人均15-30元</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">D6晚</div>
+    <div class="content-col"><strong>爱尚菌·野生菌火锅(官渡古镇店)</strong> 4.6★·¥100/人 ✅已验证在古镇步行街B-1区，逛完省博步行回店吃，无缝衔接 | 三人约300元（本行程最重一餐）</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">备用</div>
+    <div class="content-col"><strong>建新园·过桥米线(宝善街店)</strong> 4.6★·¥33/人 | 宝善街195号（南屏街旁），百年老字号，D1/D2/D7 任意一餐的快速选择</div>
+  </div>
+  <div style="font-size:12px; color:var(--color-text-tertiary); margin-top:8px; line-height:1.6;">三人餐饮总预算：正餐约 170+300+100+300 ≈ 900元 + 小吃/早餐约 500元 ≈ <strong>1400-1600元/3人</strong>（符合「三人一顿不超 200」原则，菌火锅两顿除外）。周六晚高峰建议电话订位。</div>
+</div>
+
+<div class="trip-card">
+  <h3 class="section-title">⚠️ 出发前预约与准备清单（8/23-8/25 内完成）</h3>
+  <div class="todo-card">
+    <strong>必办（按紧急度排序）：</strong><br>
+    1. <strong>扶荔宫预约</strong>：微信公众号「昆明植物园」→ 提前1-3天约 <strong>8/28（周五）</strong>参观时段。<strong>今天距 8/25 只剩最后窗口，最晚 8/25 必须约！</strong>门票10元<br>
+    2. <strong>⚠️ 确认民大周六办事</strong>：8/29 是<strong>周六</strong>（原攻略误标周五），务必提前电话确认雨花校区相关办事窗口周六是否开放/是否需预约<br>
+    3. <strong>讲武堂预约</strong>：公众号「云南陆军讲武堂历史博物馆」免费预约 8/26（周三，闭馆日为周一）<br>
+    4. <strong>云南省博物馆</strong>：公众号「云南省博物馆」或「游云南」预约 8/30（周日，周一闭馆）<br>
+    5. 值机选座：MU5789（8/31）提前线上值机<br>
+    <strong>必带：</strong>身份证（云大入校登记/省博/值机都要）、雨伞、防滑鞋、充电宝<br>
+    <strong>必装：</strong>高德地图、滴滴出行、游云南
+  </div>
+</div>
+
+<div class="trip-card">
+  <h3 class="section-title">行程概览（不去石林替代版）</h3>
+  <div class="info-grid">
+    <div class="info-card"><div class="label">出发地</div><div class="value">郑州 新郑机场</div></div>
+    <div class="info-card"><div class="label">目的地</div><div class="value">昆明 长水机场</div></div>
+    <div class="info-card"><div class="label">天数</div><div class="value">7天6晚</div></div>
+    <div class="info-card"><div class="label">日期</div><div class="value">8月25日(周二)-31日(周一)</div></div>
+  </div>
+  <div class="flight-info">
+    <div class="flight-row"><span class="tag tag-transit">去程 8/25 周二</span> <strong>CZ8291</strong> 15:50 郑州新郑 <span class="flight-arrow">→</span> 18:35 昆明长水</div>
+    <div class="flight-row"><span class="tag tag-transit">回程 8/31 周一</span> <strong>MU5789</strong> 15:10 昆明长水 <span class="flight-arrow">→</span> 17:50 郑州新郑</div>
+  </div>
+  <div class="hotel-note">
+    <strong>住宿①：8/25-8/28（3晚）南强别院酒店（南屏街金马碧鸡坊店）</strong><br>
+    位于昆明市中心核心商圈，紧邻南强街夜市，步行可达翠湖、金马碧鸡坊。<br>
+    <strong>小红书评价汇总：</strong><br>
+    ✅ 优点：①位置绝佳，楼下就是南屏步行街/南强夜市，吃喝逛全方便；②套房空间大（两张大床），干净香香的；③免费早餐种类多，米线强推；④酒店没正对步行街，晚上睡觉不吵。<br>
+    ⚠️ 缺点：①电梯很小，前台在7楼，需先上7楼办入住再下去找房间；②装修偏老，灯光昏暗；③不提供一次性梳子；④有避雷帖反映隔音差（卫生间异响/水管声），但多位住客表示"不吵，晚上挺安静"。<br>
+    <strong>价格参考：</strong>青堂瓦舍大床房约190元/晚；套房两晚约728元（来源：@学术米虫 178赞帖、@铁铁举举 12赞视频、@Lian 14赞帖、@瑾柠i 8赞避雷帖）
+  </div>
+  <div class="hotel-alert">
+    <strong>住宿②：8/28晚-8/31退房（3晚）宜尚酒店（昆明火车站环城南路地铁站店）</strong><br>
+    紧邻环城南路地铁站（📍实测：1号线/2号线交汇，2号线到南强别院方向仅21分钟直达）。<br>
+    <strong>选此酒店理由：</strong>①8/29去民大雨花校区——1号线直达呈贡（📍实测含步行约72分钟）；②8/30去斗南花市——1号线直达（📍实测44分钟）；③8/31返程——2号线转6号线到长水机场（📍实测54分钟）；④距南强别院2站地铁，8/28搬行李方便。<br>
+    <strong>注意：</strong>8/31航班15:10，建议10:00-10:30从酒店出发前往机场。
+  </div>
+  <div class="alt-note">
+    <strong>替代版说明：</strong>本行程将原D4石林一日游替换为<strong>「市区深度文化慢游+长虫山日落」</strong>。理由：①小红书高赞博主马克乙（1222赞）直言石林"又差又热又混乱又脏，没意思"，多位游客反映雨季路面湿滑易摔伤；②不去石林省下高铁往返时间和费用，在市区慢游更轻松；③替代行程中D6已安排官渡古镇+省博物馆，文化覆盖不打折扣。
+  </div>
+  <h3 class="section-title" style="margin-top:16px;">🌦️ 天气（高德预报 8/23 发布）</h3>
+  <div class="weather-strip">
+    <div class="weather-day"><div class="d">8/25 周二·D1</div><div class="t">小雨 18-26℃</div></div>
+    <div class="weather-day"><div class="d">8/26 周三·D2</div><div class="t">小雨 18-25℃</div></div>
+    <div class="weather-day"><div class="d">8/27-8/31</div><div class="t">预报未出·按雨季备</div></div>
+  </div>
+  <div style="font-size:12px; color:var(--color-text-secondary); margin-top:6px; line-height:1.6;">昆明8月底为雨季尾声，多为阵雨/小雨，雨停后放晴。<strong>⚠️ 8/17-19 昆明刚发生暴雨内涝（多条街铺面被淹），雨季尾声仍需防范短时强降雨。</strong>出发前一晚更新 8/27-8/31 预报，决定 D3 滇池线与 D4 长虫山是否执行。<strong>高原紫外线强，雨后晴天尤其要防晒。</strong></div>
+  <div style="margin-top: 12px;">
+    <div class="label" style="font-size: 11px; color: var(--color-text-tertiary); margin-bottom: 6px;">8月底昆明穿衣 & 必备</div>
+    <div class="packing-list">
+      <span class="packing-item">薄外套（早晚18℃）</span>
+      <span class="packing-item">短袖/长袖T恤</span>
+      <span class="packing-item">雨伞/雨衣（雨季）</span>
+      <span class="packing-item">防晒霜（高原紫外线强）</span>
+      <span class="packing-item">防滑步行鞋</span>
+      <span class="packing-item">身份证（多处查验）</span>
+      <span class="packing-item">充电宝</span>
+      <span class="packing-item">少量现金</span>
+    </div>
+  </div>
+</div>
+
+<div class="trip-card">
+  <div class="trip-header">
+    <div class="day-badge badge-blue">D1</div>
+    <div>
+      <p class="trip-title">8月25日（周二）· 抵达昆明 + 南强街夜市</p>
+      <p class="trip-subtitle">航班抵达，入住市中心酒店，夜逛南强街</p>
+    </div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">15:50</div>
+    <div class="content-col"><strong>CZ8291 郑州新郑机场起飞</strong><span class="tip">建议提前2小时到机场</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">18:35</div>
+    <div class="content-col"><strong>抵达昆明长水机场</strong><span class="tip">长水机场→市中心约28km</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">19:00</div>
+    <div class="content-col"><strong>机场→酒店，两选一：</strong>①地铁6号线（机场中心→塘子巷）41分钟，塘子巷站打车起步价约9元/2km到酒店；②全程打车约45-60分钟，约90-110元（两人平摊划算）。<span class="tag tag-transit">地铁6元+打车9元</span><span class="tag tag-transit">直达打车90-110元</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">20:00</div>
+    <div class="content-col"><strong>入住南强别院酒店</strong>（前台在7楼），放行李稍事休息</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">21:00</div>
+    <div class="content-col"><span class="tag tag-must">必逛</span><strong>南强街夜市</strong>，步行即达。吃云南小锅米线、烧饵块、鲜花饼、木瓜水。街口牌坊拍照很出片。<span class="tag tag-food">人均30-50元</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">22:00</div>
+    <div class="content-col"><strong>金马碧鸡坊</strong>（南强街旁），夜景灯光拍照打卡</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">22:30</div>
+    <div class="content-col">回酒店休息</div>
+  </div>
+  <div class="day-footer">
+    <span class="rain-plan">🌧️ 雨天备案：预报小雨。夜市多在骑楼下可避雨，雨不会太大可照逛；小雨中金马碧鸡坊灯光+湿地反光反而出片。伞随身。</span>
+    <span class="amap-check">📍 高德实测：机场→塘子巷 地铁6号线41分钟；塘子巷→酒店 打车约5分钟（原"东风广场站换乘"有误，已修正为塘子巷方案更顺）。</span>
+  </div>
+</div>
+
+<div class="trip-card">
+  <div class="trip-header">
+    <div class="day-badge badge-teal">D2</div>
+    <div>
+      <p class="trip-title">8月26日（周三）· 翠湖人文线（步行全程）</p>
+      <p class="trip-subtitle">讲武堂→翠湖→云南大学→文林街→圆通寺</p>
+    </div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">08:30</div>
+    <div class="content-col">酒店早餐，步行出发（📍全程实测：酒店→讲武堂步行约30分钟/2.3km，沿南屏街→翠湖南路，正好散步消食）</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">09:00</div>
+    <div class="content-col"><span class="tag tag-must">必去</span><strong>云南陆军讲武堂</strong>（翠湖西路22号，免费，需公众号预约，周三开放）。中国近代三大军事院校之一，黄色建筑很出片。参观约1.5小时。<span class="tag tag-free">免费·已列预约清单</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">10:30</div>
+    <div class="content-col"><strong>翠湖公园</strong>（讲武堂对面，高德评分4.8）。8月翠湖荷花尾声，绿树成荫。喂松鼠、看红嘴鸥。环湖散步约1小时。<span class="tag tag-free">免费</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">11:30</div>
+    <div class="content-col"><span class="tag tag-food">午餐</span><strong>端仕小锅(文林街店)</strong> 4.6★·¥19/人，文林街74号（正好在动线上）；想吃正餐升级 <strong>熙楼(翠湖店)</strong> 4.7★·¥125/人，翠湖北路100号（讲武堂/云大对面），过桥米线仪式感适合带父母</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">13:00</div>
+    <div class="content-col"><strong>云南大学东陆校区</strong>（翠湖旁，免费，凭身份证登记入校；入校政策可能调整，以现场为准）。百年名校，银杏道、贡院、会泽院。逛约1小时。<span class="tag tag-free">免费</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">14:30</div>
+    <div class="content-col"><strong>文林街咖啡馆群</strong>。文艺街区，独立咖啡馆、书店、手作店。推荐：大象书店、卡夫卡咖啡。慢慢逛约1.5小时——正好躲午后阵雨。</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">16:00</div>
+    <div class="content-col"><strong>圆通寺</strong>（圆通街30号，高德评分4.7；文林街步行约15分钟）。昆明最古老的佛教寺庙之一，免费参观。<span class="tag tag-free">免费</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">17:30</div>
+    <div class="content-col"><span class="tag tag-food">晚餐</span><strong>旮旯食堂·现炒云南菜(南屏街店)</strong> 4.7★·¥55/人（护国街道耳巷19号，距酒店步行约5分钟），必点：小炒肉、汽锅鸡、老奶洋芋，三人约170元<span class="tag tag-food">人均55元</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">19:00</div>
+    <div class="content-col">回酒店休息，或在南屏街商圈逛逛（恒隆广场、百大等）</div>
+  </div>
+  <div class="day-footer">
+    <span class="rain-plan">🌧️ 雨天备案：本日室内比重大（讲武堂展厅、咖啡馆），天然抗雨。小雨照常执行；若中到大雨，云大校园改昆明老街（文明街、甬道街骑楼）。</span>
+    <span class="amap-check">📍 高德实测：酒店①→讲武堂 步行30分钟/2.3km；文林街→圆通寺 步行约15分钟。</span>
+  </div>
+</div>
+
+<div class="trip-card">
+  <div class="trip-header">
+    <div class="day-badge badge-coral">D3</div>
+    <div>
+      <p class="trip-title">8月27日（周四）· 滇池线（西山懒人版+海埂+民族村）<span class="tag tag-new">父母友好·全程约3000步</span></p>
+      <p class="trip-subtitle">大巴上山→龙门石窟→滇池索道下山→海埂大坝→民族村</p>
+    </div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">08:00</div>
+    <div class="content-col">酒店早餐，打车到<strong>西山风景区北门</strong>（📍实测46分钟/22.5km，请按此排班）</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">09:00</div>
+    <div class="content-col">北门<strong>只买上山大巴票</strong>（12.5元/人，<strong>不用买景区大门门票</strong>），大巴坐到终点站（盘山路约25分钟，中间站不下车）<span class="tag tag-transit">大巴12.5元</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">09:40</div>
+    <div class="content-col">终点站下车即<strong>龙门景区牌坊</strong>，先看<strong>聂耳墓/聂耳纪念馆</strong>（免费，平路无爬升）</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">10:15</div>
+    <div class="content-col"><span class="tag tag-must">必去</span><strong>龙门景区</strong>（30元/人，高德评分4.7），步行至龙门石窟俯瞰滇池全景。<strong>石窟段窄且陡，父母慢行、抓扶手，雨后路滑。</strong>若体力不支可以不进景区（省30元），在景区外咖啡馆观景台同样能免费俯瞰滇池拍照。<span class="tag tag-transit">门票30元</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">12:30</div>
+    <div class="content-col">出龙门景区，步行至尽头左转<strong>滇池索道站</strong>（⚠️注意：龙门上山索道升级改造停运中，坐的是景区外的<strong>滇池索道</strong>，运营正常），乘索道下山直达海埂公园方向，缆车上俯瞰滇池+城市全景，很平稳。<span class="tag tag-transit">索道60元</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">13:10</div>
+    <div class="content-col"><span class="tag tag-food">午餐</span>海埂大坝附近简餐（小吃/米线）<span class="tag tag-food">人均20-40元</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">14:00</div>
+    <div class="content-col"><span class="tag tag-must">必去</span><strong>海埂大坝/海埂公园</strong>（高德评分4.8）平路散步看滇池开阔水面。<strong>8月底无红嘴鸥（11月-次年3月才来，别跑空）</strong>，拍照发呆很惬意。<span class="tag tag-free">免费</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">15:00</div>
+    <div class="content-col">打车/步行到<strong>云南民族村</strong>（滇池路1310号，约2km）。25个少数民族村寨，表演丰富，走走停停约2.5小时（内有休息点）。<span class="tag tag-transit">门票90元</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">17:45</div>
+    <div class="content-col"><span class="tag tag-food">晚餐</span><strong>8种野菌·野生菌火锅(滇池后海店)</strong> 4.3★·¥101/人，碧鸡路2999-2号，返程顺路（民族村→店22分钟→酒店仅多耗5分钟）；或回市区吃 <strong>爱尚菌(昆明老街店)</strong> 4.7★·¥105/人（文庙直街33号，离酒店①近）。三人锅+菌拼盘足够。<span class="tag tag-food">人均100左右</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">19:30</div>
+    <div class="content-col">打车回酒店（📍实测32分钟/12.8km）</div>
+  </div>
+  <div class="day-footer">
+    <span class="rain-plan">🌧️ 雨天备案：中到大雨索道可能停运且龙门湿滑，本日与 D6 整体对调（D3 执行省博物馆+官渡古镇，D6 改滇池线；8/27周四、8/30周日省博均开放，对调可行）。小雨照常（大巴+索道受雨影响小，石窟段慢行）。</span>
+    <span class="amap-check">📍 高德实测：酒店①→西山 46分钟/22.5km；民族村→酒店① 32分钟/12.8km。小红书 8/6 实测（@喵小麦 1344赞）：北门大巴12.5元上山，龙门上山索道停运改造中，滇池索道60元正常运营；海洪湿地透明船90元/h（17:30停售）可作为加分项。</span>
+  </div>
+</div>
+
+<div class="trip-card">
+  <div class="trip-header">
+    <div class="day-badge badge-purple">D4</div>
+    <div>
+      <p class="trip-title">8月28日（周五）· 市区深度文化慢游 + 长虫山日落 + 换酒店 <span class="tag tag-new">替代石林</span></p>
+      <p class="trip-subtitle">篆新农贸市场→大观楼→植物园扶荔宫→长虫山日落</p>
+    </div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">08:00</div>
+    <div class="content-col">南强别院退房（8/25-8/28住满3晚），<strong>行李寄存前台</strong>。今日换到宜尚酒店（8/28-8/31住3晚）</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">08:15</div>
+    <div class="content-col">打车出发（📍实测12分钟/4km）</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">08:30</div>
+    <div class="content-col"><span class="tag tag-must">必去</span><strong>大观篆新农贸市场</strong>（篆塘路69号，高德评分4.8）。昆明最有烟火气的菜市场，本地人逛吃圣地。吃早点直奔<strong>辣辣小吃豆花米线</strong> 4.5★·¥15/人（市场10栋2层），另尝卤饵丝、破酥包子。逛约1.5小时。<span class="tag tag-food">人均20-30元</span><span class="tag tag-free">免费入场</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">10:10</div>
+    <div class="content-col">打车到大观楼（📍实测约10分钟；两地相距3km，原"步行5分钟"有误，步行需40分钟）</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">10:20</div>
+    <div class="content-col"><strong>大观公园</strong>（大观路284号，高德评分4.7）。"天下第一长联"所在，8月荷花虽近尾声但园景优美。登大观楼看滇池远景。逛约1.5小时。<span class="tag tag-transit">门票20元</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">12:05</div>
+    <div class="content-col">打车前往北郊植物园（📍实测45分钟/25km，本日最长一程，车上正好午休）</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">12:55</div>
+    <div class="content-col"><span class="tag tag-food">午餐</span>植物园/黑龙潭一带龙泉路农家菜，或园内简餐，简单解决<span class="tag tag-food">人均30-50元</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">14:00</div>
+    <div class="content-col"><span class="tag tag-must">必去</span><strong>昆明植物园扶荔宫</strong>（蒜村，需公众号提前预约⚠️8/25前必须约好8/28时段）。小红书博主马克乙强烈推荐——温室里有热带植物、食虫植物、多肉区，像走进宫崎骏动画。拍照超级出片！逛约2小时。<strong>温室为室内，雨天照常，是完美的雨天景点。</strong><span class="tag tag-transit">门票10元</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">16:10</div>
+    <div class="content-col">步行到黑龙潭公园（📍实测22分钟/1.7km，就在隔壁）</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">16:30</div>
+    <div class="content-col"><strong>黑龙潭公园</strong>（龙泉路612号，高德评分4.7）。古建筑+泉水+唐梅宋柏，清幽人少。免费。<span class="tag tag-free">免费</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">17:35</div>
+    <div class="content-col">打车到长虫山（📍实测18分钟/7.4km）</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">18:00</div>
+    <div class="content-col"><span class="tag tag-must">必去</span><strong>长虫山看日落</strong>（小红书博主强烈推荐）。俯瞰昆明城市全景+日落晚霞。8/28日落约19:25，建议18:00前到位。免费，无门票。<span class="tag tag-free">免费</span><span class="tip">注意：山路无灯，日落后尽快下山</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">19:40</div>
+    <div class="content-col">下山打车回南强别院取行李（📍实测27分钟/10.5km）</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">20:15</div>
+    <div class="content-col">地铁2号线到环城南路站（📍实测21分钟直达），入住宜尚酒店</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">21:00</div>
+    <div class="content-col"><span class="tag tag-food">夜宵</span><strong>四方街·云南家常菜(吴井路店)</strong> 4.6★·¥34/人（吴井路266号，距酒店②约1km/起步价）；吃得晚可去吴井路火塘烧烤（塘屋烧烤 吴井店）</div>
+  </div>
+  <div class="day-footer">
+    <span class="rain-plan">🌧️ 雨天备案：扶荔宫是温室（室内）雨天照常✅；<strong>长虫山雨天必弃</strong>（无灯山路湿滑危险）→ 改云南省图书馆（翠湖旁）或昆明老街（文明街骑楼）。黑龙潭雨大可略过，直接 15:30 提前上长虫山改为 16:00 入扶荔宫晚场。</span>
+    <span class="amap-check">📍 高德实测：酒店①→篆新 12分钟；篆新→大观楼 打车10分钟；大观楼→植物园 45分钟/25km；植物园→黑龙潭 步行22分钟；植物园→长虫山 18分钟；长虫山→酒店① 27分钟；酒店①→酒店② 地铁2号线21分钟。</span>
+  </div>
+</div>
+
+<div class="trip-card">
+  <div class="trip-header">
+    <div class="day-badge badge-amber">D5</div>
+    <div>
+      <p class="trip-title">8月29日（周六）· 云南民族大学雨花校区 + 呈贡周边 ⚠️周六</p>
+      <p class="trip-subtitle">白天办事 → 傍晚斗南湿地公园/洛龙公园</p>
+    </div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">07:40</div>
+    <div class="content-col"><span class="tag tag-check">重要</span><strong>出发前务必已确认：8/29 为周六，民大相关办事窗口是否开放</strong>（若周六不办公，需与后续日程调整）。宜尚酒店早餐</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">08:00</div>
+    <div class="content-col">环城南路站乘地铁1号线（大学城南方向）。📍实测全程约72分钟（含大学城站后步行1.5km）；<strong>省力方案：大学城站下，打车起步价到校门，全程约60分钟</strong></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">09:20</div>
+    <div class="content-col"><strong>云南民族大学雨花校区</strong>（呈贡区月华街2929号）办事</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">12:00</div>
+    <div class="content-col"><span class="tag tag-food">午餐</span>民大校内食堂或周边。呈贡大学城片区饮食便宜，周六大学城商业街很热闹<span class="tag tag-food">人均15-30元</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">14:00</div>
+    <div class="content-col">继续办事或在校园内散步。民大雨花校区建筑很有特色，各学院楼融合少数民族建筑风格</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">16:00</div>
+    <div class="content-col">办事结束，打车到<strong>斗南湿地公园</strong>（📍实测19分钟/9.8km）。滇池东岸湿地公园，人少景好，看滇池日落（19:30左右）。<span class="tag tag-free">免费</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">17:30</div>
+    <div class="content-col"><strong>洛龙公园</strong>（呈贡区政府旁），时间充裕可顺路逛。呈贡本地人休闲公园，免费。</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">18:40</div>
+    <div class="content-col"><span class="tag tag-food">晚餐</span>回程途经<strong>大学城</strong>，各种平价美食。推荐<strong>包浆豆腐</strong>、<strong>烤猪蹄</strong>、云南特色<strong>炸洋芋</strong></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">20:00</div>
+    <div class="content-col">地铁1号线回宜尚酒店（📍从斗南站出发实测约66分钟；若从湿地直接打车回市区约40分钟/约50元，晚上更省时）</div>
+  </div>
+  <div class="day-footer">
+    <span class="rain-plan">🌧️ 雨天备案：湿地/公园为户外，中到大雨则取消 → 改回市区逛南亚风情第壹城或公园1903（均有室内），或提前回酒店休整。</span>
+    <span class="amap-check">📍 高德实测：酒店②→民大 地铁全程72分钟（含末段步行1.5km，大学城站打车接驳可压到60分钟）；民大→斗南湿地 打车19分钟；斗南→酒店② 地铁66分钟。</span>
+  </div>
+</div>
+
+<div class="trip-card">
+  <div class="trip-header">
+    <div class="day-badge badge-pink">D6</div>
+    <div>
+      <p class="trip-title">8月30日（周日）· 斗南花市 + 官渡古镇 + 省博物馆</p>
+      <p class="trip-subtitle">从宜尚出发一线串游：花市→官渡古镇→省博物馆</p>
+    </div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">08:00</div>
+    <div class="content-col">宜尚酒店早餐（今天不用退房，最后一晚住到明天8/31退房）</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">09:00</div>
+    <div class="content-col">地铁1号线到<strong>斗南花市·花花世界</strong>（斗南站，📍实测44分钟/出站步行约570米）。亚洲最大鲜花交易市场。<strong>注意：白天以批发为主，零售摊位少且价格不便宜；周日白天有花展，热闹的零售夜市在晚8点后。</strong>白天来感受氛围+买些散花也不错。<span class="tag tag-free">免费入场</span><span class="tag tag-food">鲜花10-30元</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">11:30</div>
+    <div class="content-col">打车到<strong>官渡古镇</strong>（📍实测18分钟/8.1km）。古镇免费，午餐古镇内逛吃：<strong>眼镜粑粑</strong> 4.6★·¥6/个（仿古南大街好人家药房旁，排队也要买）+ 小锅米线/甜白酒<span class="tag tag-food">人均15-30元</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">13:00</div>
+    <div class="content-col"><strong>官渡古镇</strong>（广福路，高德评分4.7）深度逛约1.5小时：土主寺、法定寺、金刚塔等古建，周日人烟气十足。</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">14:40</div>
+    <div class="content-col">步行到云南省博物馆（📍实测12分钟/约900米）</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">14:55</div>
+    <div class="content-col"><strong>云南省博物馆</strong>（广福路6393号，免费需预约/身份证，周日开放、周一闭馆）。青铜文化、南诏大理国历史、恐龙化石。逛约2小时。</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">17:00</div>
+    <div class="content-col"><span class="tag tag-food">晚餐</span><strong>爱尚菌·野生菌火锅(官渡古镇店)</strong> 4.6★·¥100/人 ✅已验证在古镇步行街B-1区（点评+高德双确认），逛完省博步行回店无缝衔接<span class="tag tag-food">人均100元</span></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">19:00</div>
+    <div class="content-col">打车回宜尚酒店（📍打车约25分钟，比地铁59分钟快；地铁1号线方案也直达）</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">20:00</div>
+    <div class="content-col">顺路在南屏街/超市采购伴手礼（嘉华鲜花饼、普洱茶）</div>
+  </div>
+  <div class="day-footer">
+    <span class="rain-plan">🌧️ 雨天备案：省博物馆为室内，雨天友好✅。花市为室内大棚基本无碍；官渡古镇主干道有檐廊。本日抗雨性最强，若 D3 雨天对调，本日改滇池线。</span>
+    <span class="amap-check">📍 高德实测：酒店②→斗南花市 地铁44分钟；花市→官渡古镇 打车18分钟/8.1km；官渡→省博物馆 步行12分钟/900米；官渡→酒店② 打车约25分钟（地铁59分钟）。</span>
+  </div>
+</div>
+
+<div class="trip-card">
+  <div class="trip-header">
+    <div class="day-badge badge-green">D7</div>
+    <div>
+      <p class="trip-title">8月31日（周一）· 返程</p>
+      <p class="trip-subtitle">昆明→郑州</p>
+    </div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">09:00</div>
+    <div class="content-col">宜尚酒店早餐，整理行李</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">10:00</div>
+    <div class="content-col">退房（8/28-8/31住满3晚）。环城南路站乘<strong>地铁2号线→塘子巷站换6号线</strong>直达长水机场（📍实测54分钟/含步行约770米；原"东风广场换乘"有误，6号线起点是塘子巷）</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">11:00</div>
+    <div class="content-col">到达长水机场，办理值机、行李托运</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">12:00</div>
+    <div class="content-col">机场午餐（长水机场餐饮选择丰富）+ 逛免税店</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">14:35</div>
+    <div class="content-col">登机</div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">15:10</div>
+    <div class="content-col"><strong>MU5789 昆明长水机场起飞</strong></div>
+  </div>
+  <div class="time-row">
+    <div class="time-col">17:50</div>
+    <div class="content-col"><strong>抵达郑州新郑机场</strong>，行程结束</div>
+  </div>
+  <div class="day-footer">
+    <span class="rain-plan">🌧️ 雨天备案：地铁不受天气影响✅。周一早高峰打车慢，地铁方案更稳；已预留3小时+提前量。</span>
+    <span class="amap-check">📍 高德实测：酒店②→长水机场 地铁2号线→塘子巷换6号线，54分钟。</span>
+  </div>
+</div>
+
+<div class="trip-card">
+  <h3 class="section-title">费用估算（不去石林版·7天6晚）</h3>
+  <div class="info-grid">
+    <div class="info-card"><div class="label">交通（市内+机场往返）</div><div class="value">约350-450元/人</div></div>
+    <div class="info-card"><div class="label">门票（大巴12.5+龙门30+索道60+民族村90+大观楼20+扶荔宫10）</div><div class="value">约220元/人</div></div>
+    <div class="info-card"><div class="label">餐饮（7天）</div><div class="value">约600-800元/人</div></div>
+    <div class="info-card"><div class="label">住宿① 南强别院 3晚</div><div class="value">约570元</div></div>
+    <div class="info-card"><div class="label">住宿② 宜尚 3晚</div><div class="value">300-600元</div></div>
+    <div class="info-card"><div class="label">合计（不含机票）</div><div class="value">约2000-2600元/人</div></div>
+  </div>
+  <div style="font-size: 12px; color: var(--color-text-tertiary); margin-top: 8px; line-height:1.6;">
+    对比石林版省下：石林高铁往返36元+石林门票130元=约166元/人。西山懒人版费用（大巴12.5+龙门30+索道60=102.5元/人，不进龙门则 72.5 元）。市内交通按高德实测里程含打车估算（3 人同行打车更划算）。
+  </div>
+</div>
+
+<div class="trip-card">
+  <h3 class="section-title">重要提醒</h3>
+  <div style="font-size: 13px; line-height: 1.8; color: var(--color-text-primary);">
+    1. <strong>扶荔宫预约最紧急</strong>：关注「昆明植物园」微信公众号，提前1-3天预约，<strong>8/25 前必须约好 8/28（周五）时段</strong>。<br>
+    2. <strong>⚠️ 8/29（周六）民大办事确认</strong>：本版星期已修正为 2026 年实际（8/29=周六），若相关窗口周六不办公，尽快联系学校改约或调整日程。<br>
+    3. <strong>长虫山注意安全</strong>：山路无照明，日落后必须尽快下山，带手电/手机照明；雨天路面湿滑则直接放弃（备选：省图书馆/昆明老街）。<br>
+    4. <strong>8月昆明雨季</strong>：预报 8/25-26 均有小雨（18-26℃）。随身折叠伞+薄外套；雨后放晴紫外线极强，防晒别松懈。出发前一晚刷新 8/27-8/31 预报，决定 D3/D4 是否执行或对调。<br>
+    5. <strong>野生菌季节</strong>：8月是吃菌黄金期，推荐菌火锅（爱尚菌/一朵菌/菌子一家），一定要煮熟再吃；肠胃敏感者当天别安排长车程。<br>
+    6. <strong>8/28换酒店动线</strong>：早上退房时把行李寄存南强别院前台 → 晚上长虫山下山后顺路取行李（27分钟车程）→ 地铁2号线21分钟直达环城南路宜尚。避免带行李逛一天。<br>
+    7. <strong>讲武堂/省博物馆周一闭馆</strong>：本行程 D2（周三）、D6（周日）均避开；若 D3 雨天对调 D6，省博 8/27（周四）也开放，安全。<br>
+    8. <strong>证件随身</strong>：云大入校登记、省博入馆、机场值机均需身份证。<br>
+    9. <strong>⚠️ 雨季内涝预警（8/20 小红书整理，近期实况）</strong>：昆明 8/17-19 暴雨致多路段积水。与行程相关的易涝点：<strong>D5 呈贡驼峰街</strong>（三岔口-上可乐村，民大/斗南方向）、<strong>D6 官渡昌宏西路/珥季路/彩云北路×昌宏路口</strong>（斗南→官渡打车线路）、<strong>D4 北部白龙路口/北站隧道</strong>（植物园方向）。<strong>应对：①短时强降雨优先地铁（不受积水影响）；②打车避开下穿隧道，跟司机说走高架/主路；③每天出发前看高德雷达图，红黄色回波时等 30-60 分钟再出门（昆明雨来得快去得快）。</strong><br>
+    10. <strong>西山当日提示</strong>：龙门上山索道停运改造中，别被门口"索道停运"牌子吓退——上山大巴+滇池索道（下山）都正常。
+  </div>
+</div>
+
+<div class="trip-card">
+  <h3 class="section-title">数据来源</h3>
+  <div class="src-list">
+    · 高德地图 Web 服务 API（2026-08-23 实测）：各段步行/打车/地铁路线耗时与里程、POI 坐标与评分、天气预报<br>
+    · 大众点评（cn-scraper-mcp，2026-08-23）：分店与门店存在性验证；高德 POI：餐厅评分/人均/地址电话（端仕小锅4.6¥19、熙楼4.7¥125、旮旯食堂4.7¥55、辣辣小吃4.5¥15、四方街4.6¥34、眼镜粑粑4.6¥6、爱尚菌老街4.7¥105/官渡4.6¥100、8种野菌4.3¥101、建新园4.6¥33）<br>
+    · 小红书笔记（2026-08-23 第二轮实时采集）：@喵小麦（8/6，1344赞）西山懒人版+索道停运实锤；@云南旅居阿雯（8/20，45赞）昆明易涝片区清单；@杨门掌柜（8/19，35赞）暴雨内涝实况；@油炸叮叮猫（8/20，113赞）8-9月攻略；@卡卡（6月，1684赞）带父母云南8天实战经验<br>
+    · 小红书笔记（WorkBuddy 原采集）：@马克乙（1222赞）、@学术米虫（178赞）等<br>
+    · 门票价格以现场/官方公众号为准，出行前请二次确认；天气预报具有时效性，请滚动更新
+  </div>
+</div>
+</body>
+</html>

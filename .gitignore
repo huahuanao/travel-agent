@@ -1,0 +1,17 @@
+# 本地服务与凭据（绝不提交！）
+services/
+cookies.json
+*.cookies
+~/.cn-scraper-cookies
+
+# 运行时产物
+*.log
+.DS_Store
+output/
+*.html
+!examples/*.html
+
+# 个人记忆与隐私
+.workbuddy-ai/
+memory/
+.env

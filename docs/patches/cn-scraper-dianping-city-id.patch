@@ -1,0 +1,40 @@
+--- a/src/cn_scraper_mcp/engines/dianping.py
++++ b/src/cn_scraper_mcp/engines/dianping.py
+@@ -58,9 +58,36 @@
+                 continue
+         return {}
+ 
++
++    # 已验证的城市ID（大众点评 /search/keyword/{id}/ 路径）
++    _CITY_IDS = {"上海": "1", "北京": "2", "南京": "3", "广州": "4", "杭州": "5", "苏州": "6", "深圳": "7", "成都": "8", "重庆": "9", "天津": "10", "武汉": "11", "西安": "14", "昆明": "267"}
++    _CITY_ID_RE = re.compile(r"/search/keyword/(\d+)/")
++
++    def _resolve_city_id(self, city: str) -> str:
++        if not city:
++            return "1"
++        city = city.strip()
++        if city.isdigit():
++            return city
++        if city in self._CITY_IDS:
++            return self._CITY_IDS[city]
++        # ascii slug（如 "kunming"）：抓城市页解析ID
++        if city.isascii():
++            try:
++                url = f"https://www.dianping.com/{city}"
++                status, page = self.http.get_text(url, session=self.session, headers=self._headers())
++                if status == 200:
++                    m = self._CITY_ID_RE.search(page)
++                    if m:
++                        return m.group(1)
++            except Exception:
++                pass
++        return "1"
++
+     def search(self, keyword: str, city: str = "", limit: int = 10) -> dict:
+         encoded = urllib.parse.quote(keyword)
+-        url = f"https://www.dianping.com/search/keyword/1/0_{encoded}"
++        cid = self._resolve_city_id(city)
++        url = f"https://www.dianping.com/search/keyword/{cid}/0_{encoded}"
+         status, page = self.http.get_text(url, session=self.session, headers=self._headers())
+         if status != 200:
+             return {
