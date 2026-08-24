@@ -16,7 +16,7 @@
 ### 1. 一键启动数据服务
 
 ```bash
-cd travel-master
+cd travel-agent
 ./start-services.sh
 ```
 
@@ -63,5 +63,5 @@ export CN_SCRAPER_URL=http://127.0.0.1:8002/mcp
 能。工具层优雅降级——小红书/点评工具返回启动指引，高德与文件操作不受影响。
 
 **Q：迁移到新机器？**
-带走整个 `travel-master/` 目录（或重新 clone + `./setup.sh`）、`~/.cn-scraper-cookies/`（点评登录）、
+带走整个 `travel-agent/` 目录（或重新 clone + `./setup.sh`）、`~/.cn-scraper-cookies/`（点评登录）、
 `~/.zshrc` 里的 `AMAP_API_KEY`。小红书重新扫码即可。

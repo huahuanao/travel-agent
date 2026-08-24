@@ -5,7 +5,7 @@
 ```
 你的终端
   │
-  │  cd travel-master && pi
+  │  cd travel-agent && pi
   ▼
 ┌──────────────────────── pi（Agent 宿主）────────────────────────┐
 │  .pi/extensions/travel-tools/   ← 自动加载的扩展（工具层）        │

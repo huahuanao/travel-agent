@@ -42,7 +42,7 @@ Agent：
 ### 四步安装
 
 ```bash
-git clone <本仓库> travel-master && cd travel-master
+git clone <本仓库> travel-agent && cd travel-agent
 
 # 1. 安装依赖（下载 xiaohongshu-mcp 二进制、装 cn-scraper、打点评城市补丁）
 ./setup.sh
@@ -67,7 +67,7 @@ pi
 ### 日常使用（每次开机后）
 
 ```bash
-cd travel-master && ./start-services.sh && pi
+cd travel-agent && ./start-services.sh && pi
 ```
 
 ## 💬 使用示例
@@ -121,7 +121,7 @@ cd travel-master && ./start-services.sh && pi
 ## 📁 目录结构
 
 ```
-travel-master/
+travel-agent/
 ├── README.md                        # 本文档
 ├── setup.sh                         # 首次安装：依赖下载+补丁
 ├── start-services.sh                # 日常启动：两个 MCP 服务+环境检查
