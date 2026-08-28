@@ -22,6 +22,7 @@ pi                   # 开工；进入后可用 /xhs 和 /dp 验证服务状态
 - **大众点评**（经本地 cn-scraper-mcp，网页抓取，`127.0.0.1:8001`）
   - 工具：`dp_search` / `dp_shop` / `dp_reviews` / `dp_login`
   - 评分/人均被风控时用 `amap_poi_search` 补齐（三角验证）
+  - ⚠️ 已知问题（2026-08）：点评网页改版致上游解析失效，搜索全空；商户验证临时改用 `amap_poi_search` + 预订平台，详见 `docs/known-issues.md`
 - **高德地图**（需 `AMAP_API_KEY` 环境变量，官方 API 直连）
   - 工具：`amap_poi_search` / `amap_geocode` / `amap_route`
 - **工作流**：详见 travel-planner skill（需求澄清 → 小红书采集 → 点评/高德核验 → HTML 输出）

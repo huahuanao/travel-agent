@@ -101,8 +101,8 @@ cd travel-agent && ./start-services.sh && pi
 | `xhs_note_detail` | 小红书 | 笔记正文+图片+评论（避坑金矿） | 慢 |
 | `xhs_user_profile` | 小红书 | 博主主页与系列内容 | 可选 |
 | `xhs_login_status` | 小红书 | 服务/登录状态检查 | 排障先调它 |
-| `dp_search` | 大众点评 | 商户/分店搜索 | 限速1次/秒 |
-| `dp_shop` / `dp_reviews` | 大众点评 | 商户详情/评价 | 风控期常降级为链接 |
+| `dp_search` | 大众点评 | 商户/分店搜索 | 限速1次/秒；⚠️ 当前上游解析失效，见 [known-issues](docs/known-issues.md) |
+| `dp_shop` / `dp_reviews` | 大众点评 | 商户详情/评价 | 同上，临时用 amap_poi_search 替代 |
 | `dp_login` | 大众点评 | 弹浏览器扫码登录 | Cookie 过期时用 |
 | `amap_poi_search` | 高德 | POI 坐标/评分/人均/营业时间 | 餐厅评分也用它 |
 | `amap_geocode` | 高德 | 地址→坐标 | 定位酒店/民宿 |
@@ -158,6 +158,7 @@ travel-agent/
 - **小红书搜索超时/报 deadline exceeded**：浏览器自动化偶发卡死，让 agent 重试即可
 - **点评城市搜索结果不对**：补丁未生效，重跑 `./setup.sh`（详见 `docs/patches/`）
 - **小红书要重新扫码？**：`./services/xhs/xiaohongshu-login`
+- **大众点评搜索全为空？**：上游解析失效（2026-08 发现），非配置问题，详见 `docs/known-issues.md`
 - **完整排障手册**：`docs/recovery.md`
 
 ## 🙏 致谢与参考（本项目站在谁的肩膀上）

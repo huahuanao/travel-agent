@@ -47,6 +47,9 @@ pi
 **Q：大众点评一直报"触发风控"？**
 Cookie 过期。在 pi 里说"大众点评需要重新登录"，agent 调 `dp_login` 弹浏览器扫码。
 
+**Q：大众点评搜索返回全空（count:0 且无报错）？**
+上游解析失效（点评网页改版），详见 `docs/known-issues.md`；临时用高德 `amap_poi_search` 查商户评分/人均。
+
 **Q：大众点评搜出来的城市不对？**
 城市ID补丁未生效（可能升级 cn-scraper 后被覆盖）。重跑 `./setup.sh`，或参考
 `docs/patches/cn-scraper-dianping-city-id.patch` 手动应用。
