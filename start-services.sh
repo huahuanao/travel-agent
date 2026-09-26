@@ -40,7 +40,7 @@ fi
 if check_xhs_login; then
   echo -e "    ${GREEN}登录态正常${NC}"
 else
-  echo -e "    ${YELLOW}未登录${NC} → 运行 $XHS_DIR/xiaohongshu-login 用小红书App扫码，完成后重跑本脚本"
+  echo -e "    ${YELLOW}未登录${NC} → 运行 cd $XHS_DIR && ./xiaohongshu-login 用小红书App扫码（⚠️必须先 cd 进目录，Cookie 按当前目录存储），完成后重跑本脚本"
 fi
 
 echo "==> [2/3] 大众点评 cn-scraper-mcp (:$DP_PORT)"
