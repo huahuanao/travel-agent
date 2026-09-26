@@ -80,7 +80,7 @@ export default function (pi: ExtensionAPI) {
       filters: XhsFilters,
     }),
     async execute(_id, params, signal, onUpdate) {
-      onUpdate?.("小红书搜索中（浏览器自动化，约1-3分钟）…");
+      onUpdate?.({ content: [{ type: "text", text: "小红书搜索中（浏览器自动化，约1-3分钟）…" }] });
       const args: Record<string, unknown> = { keyword: params.keyword };
       if (params.filters && Object.keys(params.filters).length > 0) args.filters = params.filters;
       const text = await xhs.callTool("search_feeds", args, { signal });
@@ -100,7 +100,7 @@ export default function (pi: ExtensionAPI) {
       click_more_replies: Type.Optional(Type.Boolean({ description: "true 展开二级回复（需 load_all_comments=true）" })),
     }),
     async execute(_id, params, signal, onUpdate) {
-      onUpdate?.("正在打开笔记并读取内容（约1-2分钟）…");
+      onUpdate?.({ content: [{ type: "text", text: "正在打开笔记并读取内容（约1-2分钟）…" }] });
       const text = await xhs.callTool("get_feed_detail", params as Record<string, unknown>, { signal });
       return { content: [{ type: "text", text }] };
     },
