@@ -69,15 +69,13 @@ PY_ENGINE=$(ls "$SERVICES"/cn-scraper-venv/lib/python*/site-packages/cn_scraper_
 if [ -n "$PY_ENGINE" ] && grep -q "_resolve_city_id" "$PY_ENGINE"; then
   info "城市ID补丁已生效"
 elif [ -n "$PY_ENGINE" ]; then
-  if (cd "$SERVICES/cn-scraper-venv/lib/python3.13/site-packages" 2>/dev/null \
-       && patch --dry-run -N -p1 < "$ROOT/docs/patches/cn-scraper-dianping-city-id.patch" >/dev/null 2>&1) \
-     || patch --dry-run -N -p0 -d "$(dirname "$PY_ENGINE")" < "$ROOT/docs/patches/cn-scraper-dianping-city-id.patch" >/dev/null 2>&1; then
-    if patch -N -p0 -d "$(dirname "$PY_ENGINE")" < "$ROOT/docs/patches/cn-scraper-dianping-city-id.patch" >/dev/null 2>&1 \
-       || patch -N -p1 -d "$SERVICES/cn-scraper-venv/lib/python3.13/site-packages" < "$ROOT/docs/patches/cn-scraper-dianping-city-id.patch" >/dev/null 2>&1; then
-      info "城市ID补丁已应用"
-    else
-      warn "补丁应用失败——大众点评搜索将默认搜上海。请参考 docs/patches/ 手动应用"
-    fi
+  # 补丁内路径为 a/src/cn_scraper_mcp/engines/dianping.py → 从 site-packages 以 -p2 应用
+  # （-f 必须加：macOS patch 找不到目标文件时会直接开 /dev/tty 交互提问，脚本内会永久挂死）
+  SP_DIR="$(cd "$(dirname "$PY_ENGINE")/../.." && pwd)"
+  if patch --dry-run -N -f -p2 -d "$SP_DIR" < "$ROOT/docs/patches/cn-scraper-dianping-city-id.patch" >/dev/null 2>&1; then
+    patch -N -f -p2 -d "$SP_DIR" < "$ROOT/docs/patches/cn-scraper-dianping-city-id.patch" >/dev/null 2>&1 \
+      && info "城市ID补丁已应用" \
+      || warn "补丁应用失败——大众点评搜索将默认搜上海。请参考 docs/patches/ 手动应用"
   else
     warn "补丁与当前版本不匹配（上游可能已修复）。如遇城市不生效，参考 docs/patches/ 手动处理"
   fi
