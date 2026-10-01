@@ -1,0 +1,16 @@
+--- a/src/cn_scraper_mcp/auth.py
++++ b/src/cn_scraper_mcp/auth.py
+@@ -168,7 +168,8 @@
+     "dianping": AuthProfile(
+         platform="dianping", cookie_filename="dianping.json", env_var="DIANPING_COOKIES_FILE",
+-        required_fields=("dper",), login_url="https://account.dianping.com/login",
+-        cookie_domain=".dianping.com", login_port=9222, login_signal=("dper",),
++        # 2026-10: dper 只是设备指纹cookie（访问登录页即出现），不能作为登录成功信号；
++        # 搜索页已强制登录（302 → account.dianping.com/pclogin）。实测登录态标志 = fspop。
++        required_fields=("dper", "fspop"), login_url="https://account.dianping.com/pclogin",
++        cookie_domain=".dianping.com", login_port=9222, login_signal=("fspop", "fspassport", "dponewsssid"),
++        # 2026-10: dper 只是设备指纹cookie（访问登录页即出现），不能作为登录成功信号；
++        # 搜索页已强制登录（302 → account.dianping.com/pclogin）。真登录态 = fspassport/dponewsssid。
++        required_fields=("dper", "fspassport"), login_url="https://account.dianping.com/pclogin",
++        cookie_domain=".dianping.com", login_port=9222, login_signal=("fspassport", "dponewsssid"),
+     ),

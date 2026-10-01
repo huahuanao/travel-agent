@@ -1,0 +1,40 @@
+--- a/src/cn_scraper_mcp/engines/dianping.py
++++ b/src/cn_scraper_mcp/engines/dianping.py
+@@ -151,6 +151,36 @@
++    @staticmethod
++    def _parse_shop_html(page: str) -> dict:
++        """2026-10：JSON-LD 已下线，店铺信息由 wx-* 组件渲染，按稳定 class 解析。"""
++
++        def grab(pattern: str) -> str:
++            m = re.search(pattern, page, re.S)
++            return m.group(1).strip() if m else ""
++
++        title = re.search(r"<title>【(.*?)】", page)
++        rating = grab(r'class="star-score[^"]*"[^>]*>([\d.]+)<')
++        review_count = grab(r'class="reviews[^"]*"[^>]*>(\d+)条')
++        return {
++            "name": DianpingEngine._text(title.group(1)) if title else "",
++            "rating": float(rating) if rating else 0,
++            "review_count": int(review_count) if review_count else 0,
++            "avg_price": grab(r'class="price[^"]*"[^>]*>¥([\d.]+)/人'),
++            "region": grab(r'class="region[^"]*"[^>]*>([^<]+)<'),
++            "category": grab(r'class="category[^"]*"[^>]*>([^<]+)<'),
++            "address": grab(r"addressText[^>]*>\s*([^<]+?)\s*<"),
++            "transit": grab(r'desc-addr-txt[^>]*>([^<]+)<'),
++            "status": grab(r'biz-txt[^>]*>([^<]+)<'),
++            "hours": grab(r'biz-time[^>]*>([^<]+)<'),
++        }
++
+     def shop(self, shop_id: str) -> dict:
+         ...
+-        # 原：仅依赖 application/ld+json（已下线，返回全空）
++        # JSON-LD 为空时回退 HTML 解析，并补充 avg_price/region/category/hours 等字段
++        if not info["name"]:
++            info.update(self._parse_shop_html(page))
++        return info
++
+     def reviews(self, shop_id: str, limit: int = 20) -> dict:
+         ...
++        # /review_all 现跳转 App 下载页（评论强制迁移至App），明确报错并提示改用小红书
++        if "app-m-user-growth" in page or "官方下载中心" in page:
++            return {..., "error": "大众点评已将全部评论迁移至App…", "hint": "评论/避坑请改用 xhs_search"}

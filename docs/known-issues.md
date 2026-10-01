@@ -1,45 +1,49 @@
 # 已知问题（Known Issues）
 
-## [2026-08-24] 大众点评搜索全量返回空（上游解析失效）
+## [2026-08-24 → 2026-10-01 已修复] 大众点评搜索全量返回空
 
-**状态**：🔴 不可用（等待上游适配）
+**状态**：🟢 已修复（本地补丁，2026-10-01 实测通过）
 
-**现象**
-- `dp_search`（即服务端 `dianping_search`）对任何关键词都返回 `{"count":0,"items":[]}`
-- **没有** `error` 字段（区别于风控报错「大众点评页面触发风控」）
+### 当时现象与根因（更新后的完整结论）
 
-**已排查（均可排除）**
+原判断「店铺链接结构变化致 `_SHOP_RE` 失效」**不是主因**。真正的根因链：
 
-| 检查项 | 结果 |
-|---|---|
-| 服务进程 / MCP 协议 | ✅ 正常（工具可调用） |
-| 登录 Cookie | ✅ 已重新扫码（`guided_login` 保存 13 个 cookie，仍复现） |
-| 城市ID补丁（docs/patches/） | ✅ 在位（`_resolve_city_id` 存在） |
+1. **搜索页强制登录**：大众点评网页改版后，未登录访问 `/search/keyword/...` 会被 302 到
+   `account.dianping.com/pclogin`，返回的是美团账号登录页（React 空壳），自然零店铺链接。
+2. **登录信号 cookie 误配**：cn-scraper 的 `AuthProfile` 把 `dper` 当登录成功信号，但 `dper`
+   只是设备指纹 cookie（**访问登录页即出现**）→ guided_login 在用户真正扫码前就收割保存了
+   未登录 cookie。真登录态标志是 `fspop`（fs passport 家族）。
+3. **店铺详情 JSON-LD 下线**：`dp_shop` 依赖的 `application/ld+json` 结构化数据已被点评移除，
+   即使登录成功详情也解析为空。
 
-**根因**
-大众点评网页改版：搜索结果页的店铺链接结构变化，cn-scraper-mcp 引擎中
-`_SHOP_RE = re.compile(r"/shop/([A-Za-z0-9]+)")` 匹配不到任何链接 → 解析结果为空。
-属上游项目 [goesByhc/cn-scraper-mcp](https://github.com/goesByhc/cn-scraper-mcp) 需要适配的问题。
+### 修复内容（三个本地补丁，均在 docs/patches/）
 
-**影响范围**
-- 仅大众点评三个工具（search / shop / reviews）
-- 小红书、高德完全不受影响
+| 补丁文件 | 修改 | 效果 |
+|---|---|---|
+| `cn-scraper-dianping-login-signal.patch` | auth.py：`login_signal=("fspop","fspassport","dponewsssid")`、登录页改 `account.dianping.com/pclogin`、`required_fields` 加 `fspop` | 引导登录能等到真登录态再收割 |
+| `cn-scraper-dianping-shop-html-parse.patch` | dianping.py：`shop()` 在 JSON-LD 为空时回退 HTML 解析（按稳定 class：star-score/reviews/price/region/category/addressText/desc-addr-txt/biz-txt/biz-time） | `dp_shop` 恢复：评分/点评数/人均/商圈/品类/地址/交通/营业状态/营业时间（⚠️ 注意正则必须锚定 `class="` 前缀，否则会误抓 `<style>` 里的 CSS） |
+| `cn-scraper-dianping-city-id.patch` | （原有）城市ID解析 | 不变 |
 
-**临时替代方案**
-- 餐厅/酒店的存在性、评分、人均、电话、营业时间 → `amap_poi_search`（数据更稳定）
-- 酒店可订性/房价 → 以携程/美团等预订平台为准（本来也应如此）
-- 口碑/避坑 → `xhs_search` 小红书
+登录 cookie 手动收割存于 `~/.cn-scraper-cookies/dianping.json`（14 个，含 `fspop`）。
+当时 guided_login 的 Chrome 启动还有 15 秒就绪超时过短的竞态问题，本次是手动启动 Chrome
+（CDP 9222）+ 轮询 `harvest_raw` 完成收割的。
 
-**恢复方式（上游适配后）**
-```bash
-# 升级 cn-scraper-mcp（会覆盖城市补丁）
-~/.workbuddy/cn-scraper/bin/pip install -U cn-scraper-mcp   # 或 services/cn-scraper-venv/bin/pip
-# 重跑 setup.sh（自动重打城市补丁；若上游已自行修复城市参数，补丁会跳过）
-./setup.sh
-```
-若上游迟迟未适配，可自行分析新版页面结构，修改
-`services/cn-scraper-venv/lib/python3.13/site-packages/cn_scraper_mcp/engines/dianping.py`
-中的 `_SHOP_RE` 正则与解析逻辑后重启服务（`./start-services.sh`）。
+### 2026-10-01 实测（北京·月坛）
 
-**验证恢复的命令**
-在 pi 中说：「用 dp_search 搜 '过桥米线' 城市 昆明」——返回非空即恢复。
+- `dp_search("月坛", "北京")` → 15 家商户：月坛公园、同和居(月坛店)、四季民福烤鸭店(三里河店)、
+  鸦儿李记涮肉、护国寺小吃(月北店)… ✅
+- `dp_shop` 四季民福 → 4.8 分 / 15441 条点评 / ¥168/人 / 月坛商圈·烤鸭 /
+  三里河东路5号中商大厦18层 / 距木樨地站B1口步行1.0km / 营业中 10:00-22:30 ✅
+
+### 仍然不可用
+
+- **`dp_reviews`**：`/shop/{id}/review_all` 已整体 302 到 App 下载页——大众点评把评论全部
+  迁移进 App，网页端无解。已让该工具返回明确错误 + 提示改用 `xhs_search`（小红书评论区）。
+- **`telephone` 字段**：新版页面未渲染电话（在 App 内接口），`dp_shop` 该字段为空属正常。
+
+### 后续维护
+
+- 登录态 cookie 失效（再次出现 302 登录页/空结果）时：优先用 `dp_login` 重新扫码
+  （补丁已修正收割时机）；若 guided_login 的 Chrome 启动报错（15 秒就绪超时竞态），用手动方式：
+  按 `scripts/relogin-dianping.py` 文件头的步骤启动 Chrome → 扫码 → 运行该脚本收割。
+- 升级 cn-scraper-mcp 后需重打全部补丁：`./setup.sh`（setup 需确认能重放 docs/patches/ 下三个补丁）。
